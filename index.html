@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growing Child - Milestone Timeline</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #8B5A96;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header .icon {
+            width: 50px;
+            height: 50px;
+            background: #8B5A96;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+        }
+
+        /* Logo styling options */
+        .logo {
+            max-height: 60px;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .logo-large {
+            max-height: 80px;
+            width: auto;
+            margin-right: 20px;
+        }
+
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid #8B5A96;
+        }
+
+        .logo-square {
+            max-height: 50px;
+            width: auto;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .get-started {
+            background: #8B5A96;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .get-started:hover {
+            background: #7a4f85;
+            transform: translateY(-2px);
+        }
+
+        .timeline-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-marker {
+            padding: 8px 12px;
+            background: #e8e8e8;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        .timeline-marker:hover {
+            background: #d1c4e9;
+            transform: translateY(-2px);
+        }
+
+        .timeline-marker.active {
+            background: #8B5A96;
+            color: white;
+            border-color: #6a4570;
+        }
+
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stage-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #8B5A96;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stage-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stage-card.active {
+            border-color: #8B5A96;
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+        }
+
+        .stage-card.active::before {
+            transform: scaleX(1);
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stage-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stage-duration {
+            background: #8B5A96;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+
+        .stage-details {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .stage-card.active .stage-details {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .milestone-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .milestone-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .milestone-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #8B5A96;
+            font-weight: bold;
+        }
+
+        .parent-tip {
+            background: rgba(139, 90, 150, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #8B5A96;
+            margin-top: 15px;
+        }
+
+        .parent-tip strong {
+            color: #8B5A96;
+        }
+
+        .progress-tracker {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .progress-tracker h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8B5A96;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-nav {
+                gap: 5px;
+            }
+            
+            .timeline-marker {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+            
+            .stages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Authentication Modal Styles */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .auth-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .auth-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-title {
+            color: #8B5A96;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .auth-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .google-login-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .google-login-btn:hover {
+            border-color: #8B5A96;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .email-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #8B5A96;
+        }
+
+        .save-progress-btn {
+            background: #8B5A96;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .save-progress-btn:hover {
+            background: #7a4f85;
+            transform: translateY(-2px);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #999;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        /* User Status Bar */
+        .user-status {
+            background: rgba(139, 90, 150, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-status.active {
+            display: flex;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #8B5A96;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .user-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #8B5A96;
+            color: #8B5A96;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #8B5A96;
+            color: white;
+        }
+
+        /* Enhanced Get Started Button */
+        .get-started {
+            background: #8B5A96;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .get-started:hover {
+            background: #7a4f85;
+            transform: translateY(-2px);
+        }
+
+        .get-started.save-mode {
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        .get-started.save-mode:hover {
+            background: #45a049;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* Email Report Button */
+        .email-report-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .email-report-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .email-report-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .email-report-btn:hover:before {
+            left: 100%;
+        }
+
+        .email-report-btn .icon {
+            margin-right: 8px;
+        }
+
+        /* Report Modal */
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            backdrop-filter: blur(8px);
+        }
+
+        .report-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .report-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .report-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .report-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .report-body {
+            padding: 30px;
+        }
+
+        .report-preview {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .report-preview h3 {
+            color: #333;
+            margin: 0 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .report-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .highlight-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .highlight-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .report-sections {
+            margin-bottom: 25px;
+        }
+
+        .section-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            color: #667eea;
+        }
+
+        .email-capture-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            color: #333;
+            margin: 0 0 15px 0;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .email-capture-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-capture-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .send-report-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .send-report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-report-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .report-benefits {
+            margin-top: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .benefit-item:before {
+            content: '✓';
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Action Buttons Container */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .email-report-btn,
+            .get-started {
+                width: 100%;
+                max-width: 300px;
+                margin: 5px 0;
+            }
+            
+            .report-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .report-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-indicator.active {
+            display: block;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .sync-icon {
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- User Status Bar -->
+        <div class="user-status" id="userStatus">
+            <div class="user-info">
+                <img src="" alt="User Avatar" class="user-avatar" id="userAvatar">
+                <div class="user-details">
+                    <h4 id="userName">Welcome back!</h4>
+                    <p id="userEmail">your.email@example.com</p>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Sign Out</button>
+        </div>
+
+        <!-- Progress Sync Indicator -->
+        <div class="progress-indicator" id="progressIndicator">
+            <div class="sync-status">
+                <svg class="sync-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+                </svg>
+                <span id="syncMessage">Progress automatically saved</span>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>
+                <!-- Option 1: Replace with your logo image -->
+                <img src="logo.png" alt="Company Logo" class="logo">
+                
+                <!-- Option 2: Larger logo -->
+                <!-- <img src="logo.png" alt="Company Logo" class="logo-large"> -->
+                
+                <!-- Option 3: Circular logo -->
+                <!-- <img src="logo.png" alt="Company Logo" class="logo-circle"> -->
+                
+                <!-- Option 4: Square/rounded logo -->
+                <!-- <img src="logo.png" alt="Company Logo" class="logo-square"> -->
+                
+                <!-- Option 5: Keep original icon as fallback -->
+                <!-- <div class="icon">👶</div> -->
+                
+                Growing Child
+                <button class="get-started" id="getStartedBtn">Get Started</button>
+            </h1>
+            <p>Milestone Timeline for New Parents</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="email-report-btn" id="emailReportBtn">
+                <span class="icon">📧</span>Email Me The Report
+            </button>
+        </div>
+
+        <div class="timeline-nav" id="timelineNav">
+            <div class="timeline-marker active" data-stage="first-trimester">1T</div>
+            <div class="timeline-marker" data-stage="second-trimester">2T</div>
+            <div class="timeline-marker" data-stage="third-trimester">3T</div>
+            <div class="timeline-marker" data-stage="fourth-trimester">0-3</div>
+            <div class="timeline-marker" data-stage="growing-baby">3-6</div>
+            <div class="timeline-marker" data-stage="sitting-exploring">6-9</div>
+            <div class="timeline-marker" data-stage="moving-grooving">9-12</div>
+            <div class="timeline-marker" data-stage="first-steps">12-15</div>
+            <div class="timeline-marker" data-stage="toddler-time">15-18</div>
+            <div class="timeline-marker" data-stage="growing-independence">18-21</div>
+            <div class="timeline-marker" data-stage="almost-two">21-24</div>
+            <div class="timeline-marker" data-stage="two-half">2½y</div>
+            <div class="timeline-marker" data-stage="three-years">3y</div>
+            <div class="timeline-marker" data-stage="four-years">4y</div>
+            <div class="timeline-marker" data-stage="kindergarten">K</div>
+        </div>
+
+        <div class="stages-grid" id="stagesGrid">
+            <div class="stage-card active" data-stage="first-trimester">
+                <div class="stage-header">
+                    <div class="stage-title">First Trimester</div>
+                    <div class="stage-duration">Weeks 1-12</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Baby's heart begins to beat around week 6</li>
+                        <li>Major organs begin forming</li>
+                        <li>Morning sickness may peak</li>
+                        <li>First ultrasound typically scheduled</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Start taking prenatal vitamins if you haven't already.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="second-trimester">
+                <div class="stage-header">
+                    <div class="stage-title">Second Trimester</div>
+                    <div class="stage-duration">Weeks 13-26</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Baby's movements become noticeable</li>
+                        <li>Gender can typically be determined</li>
+                        <li>Anatomy scan usually performed</li>
+                        <li>Energy levels often improve</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> This is often the best time for travel and preparing the nursery.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="third-trimester">
+                <div class="stage-header">
+                    <div class="stage-title">Third Trimester</div>
+                    <div class="stage-duration">Weeks 27-40</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Baby's brain develops rapidly</li>
+                        <li>Lungs mature for breathing</li>
+                        <li>Baby gains most of their weight</li>
+                        <li>Braxton Hicks contractions may begin</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Pack your hospital bag and finalize birth plan preparations.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="fourth-trimester">
+                <div class="stage-header">
+                    <div class="stage-title">4th Trimester</div>
+                    <div class="stage-duration">0-3 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>First social smiles appear</li>
+                        <li>Head control begins to develop</li>
+                        <li>Sleep patterns start to emerge</li>
+                        <li>Feeding routines establish</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Focus on bonding, rest when baby sleeps, and accept help from others.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="growing-baby">
+                <div class="stage-header">
+                    <div class="stage-title">Growing Baby</div>
+                    <div class="stage-duration">3-6 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Rolls from tummy to back</li>
+                        <li>Reaches for and grasps objects</li>
+                        <li>Begins to laugh and babble</li>
+                        <li>Shows interest in solid foods</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Introduce tummy time and consider starting solid foods around 6 months.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="sitting-exploring">
+                <div class="stage-header">
+                    <div class="stage-title">Sitting & Exploring</div>
+                    <div class="stage-duration">6-9 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Sits without support</li>
+                        <li>Transfers objects between hands</li>
+                        <li>Begins to crawl or scoot</li>
+                        <li>Responds to their name</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Baby-proof your home and encourage exploration in safe environments.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="moving-grooving">
+                <div class="stage-header">
+                    <div class="stage-title">Moving & Grooving</div>
+                    <div class="stage-duration">9-12 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Pulls to standing position</li>
+                        <li>Cruises along furniture</li>
+                        <li>Says first words</li>
+                        <li>Plays peek-a-boo and waves</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Encourage standing and walking while ensuring a safe environment.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="first-steps">
+                <div class="stage-header">
+                    <div class="stage-title">First Steps</div>
+                    <div class="stage-duration">12-15 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Takes first independent steps</li>
+                        <li>Uses simple words with meaning</li>
+                        <li>Shows preferences for activities</li>
+                        <li>Imitates actions and sounds</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Celebrate milestones and provide plenty of opportunities for practice.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="toddler-time">
+                <div class="stage-header">
+                    <div class="stage-title">Toddler Time</div>
+                    <div class="stage-duration">15-18 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Walks independently and confidently</li>
+                        <li>Vocabulary expands to 10-20 words</li>
+                        <li>Shows independence in play</li>
+                        <li>Begins to assert preferences</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Encourage independence while maintaining consistent routines.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="growing-independence">
+                <div class="stage-header">
+                    <div class="stage-title">Growing Independence</div>
+                    <div class="stage-duration">18-21 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Runs and climbs stairs</li>
+                        <li>Uses 50+ words</li>
+                        <li>Begins parallel play</li>
+                        <li>Shows emotional regulation</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Support growing independence while setting gentle boundaries.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="almost-two">
+                <div class="stage-header">
+                    <div class="stage-title">Almost Two</div>
+                    <div class="stage-duration">21-24 months</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Combines words into phrases</li>
+                        <li>Shows interest in potty training</li>
+                        <li>Engages in pretend play</li>
+                        <li>Follows simple instructions</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Prepare for increased independence and communication skills.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="two-half">
+                <div class="stage-header">
+                    <div class="stage-title">Two and a Half</div>
+                    <div class="stage-duration">2.5 years</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Speaks in complete sentences</li>
+                        <li>Shows empathy for others</li>
+                        <li>Engages in cooperative play</li>
+                        <li>Demonstrates problem-solving skills</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Encourage social interactions and continue language development.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="three-years">
+                <div class="stage-header">
+                    <div class="stage-title">Three Years Old</div>
+                    <div class="stage-duration">3 years</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Pedals tricycle</li>
+                        <li>Uses complex sentences</li>
+                        <li>Shows interest in letters and numbers</li>
+                        <li>Plays cooperatively with others</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Consider preschool programs and continue fostering curiosity.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="four-years">
+                <div class="stage-header">
+                    <div class="stage-title">Four Years Old</div>
+                    <div class="stage-duration">4 years</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Hops on one foot</li>
+                        <li>Tells stories and asks many questions</li>
+                        <li>Shows increased attention span</li>
+                        <li>Demonstrates self-control</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Prepare for more complex learning and social situations.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card" data-stage="kindergarten">
+                <div class="stage-header">
+                    <div class="stage-title">Kindergarten Ready</div>
+                    <div class="stage-duration">5+ years</div>
+                </div>
+                <div class="stage-details">
+                    <ul class="milestone-list">
+                        <li>Demonstrates school readiness skills</li>
+                        <li>Shows emotional and social maturity</li>
+                        <li>Follows multi-step instructions</li>
+                        <li>Expresses thoughts and feelings clearly</li>
+                    </ul>
+                    <div class="parent-tip">
+                        <strong>Parent Tip:</strong> Celebrate this major milestone and continue supporting their learning journey.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-tracker">
+            <h3>Track Your Child's Progress</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="currentStage">Current Stage</label>
+                    <select id="currentStage">
+                        <option value="first-trimester">First Trimester</option>
+                        <option value="second-trimester">Second Trimester</option>
+                        <option value="third-trimester">Third Trimester</option>
+                        <option value="fourth-trimester">4th Trimester</option>
+                        <option value="growing-baby">Growing Baby</option>
+                        <option value="sitting-exploring">Sitting & Exploring</option>
+                        <option value="moving-grooving">Moving & Grooving</option>
+                        <option value="first-steps">First Steps</option>
+                        <option value="toddler-time">Toddler Time</option>
+                        <option value="growing-independence">Growing Independence</option>
+                        <option value="almost-two">Almost Two</option>
+                        <option value="two-half">Two and a Half</option>
+                        <option value="three-years">Three Years Old</option>
+                        <option value="four-years">Four Years Old</option>
+                        <option value="kindergarten">Kindergarten Ready</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="childName">Child's Name (optional)</label>
+                    <input type="text" id="childName" placeholder="Enter your child's name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" placeholder="Record special moments, questions for the doctor, or milestone achievements..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Generation Modal -->
+    <div class="report-modal" id="reportModal">
+        <div class="report-content">
+            <button class="close-modal" id="closeReportModal">&times;</button>
+            
+            <div class="report-header">
+                <h2>📋 Your Personalized Development Report</h2>
+                <p>Get expert insights and next steps for your child's journey</p>
+            </div>
+            
+            <div class="report-body">
+                <div class="report-preview">
+                    <h3>Report Preview</h3>
+                    <div class="report-highlights">
+                        <div class="highlight-item">
+                            <span class="highlight-number" id="currentStageDisplay">Stage 1</span>
+                            <div class="highlight-label">Current Stage</div>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-number" id="milestonesCount">4</span>
+                            <div class="highlight-label">Key Milestones</div>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-number" id="nextStageTime">3 months</span>
+                            <div class="highlight-label">Until Next Stage</div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-sections">
+                        <div class="section-item">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span>Current milestones and achievements</span>
+                        </div>
+                        <div class="section-item">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            <span>Upcoming developmental goals</span>
+                        </div>
+                        <div class="section-item">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span>Expert parenting tips and activities</span>
+                        </div>
+                        <div class="section-item">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            </svg>
+                            <span>Timeline for next developmental phases</span>
+                        </div>
+                        <div class="section-item">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span>Red flags to watch for</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Email Capture Form (shown if not logged in) -->
+                <div class="email-capture-form" id="reportEmailCapture">
+                    <h3 class="form-title">📨 Get Your FREE Personalized Report</h3>
+                    <input type="email" class="email-capture-input" id="reportEmailInput" placeholder="Enter your email address">
+                    <input type="text" class="email-capture-input" id="reportNameInput" placeholder="Enter your name">
+                    <button class="send-report-btn" id="sendReportBtn">
+                        Send My Personalized Report
+                    </button>
+                    
+                    <div class="report-benefits">
+                        <div class="benefit-item">Personalized milestone checklist for your child's current stage</div>
+                        <div class="benefit-item">Expert parenting tips and activity suggestions</div>
+                        <div class="benefit-item">Development timeline and what to expect next</div>
+                        <div class="benefit-item">Early intervention guidance and red flags to watch</div>
+                        <div class="benefit-item">FREE follow-up reports as your child grows</div>
+                    </div>
+                </div>
+                
+                <!-- Logged in user message -->
+                <div class="email-capture-form" id="reportLoggedInMessage" style="display: none;">
+                    <h3 class="form-title">✨ Generating Your Personalized Report</h3>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        Your detailed development report will be sent to <strong id="reportUserEmail"></strong>
+                    </p>
+                    <button class="send-report-btn" id="sendReportLoggedInBtn">
+                        Send My Report Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 class="auth-title">Save Your Progress</h2>
+            <p class="auth-subtitle">Create an account to save your child's milestones and access them from any device.</p>
+            
+            <!-- Google Login Button -->
+            <button class="google-login-btn" id="googleLoginBtn">
+                <svg class="google-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+            </button>
+            
+            <!-- Alternative Email Form -->
+            <div class="email-form">
+                <p style="color: #666; margin-bottom: 15px;">Or save with email:</p>
+                <input type="email" class="email-input" id="emailInput" placeholder="Enter your email address">
+                <input type="text" class="email-input" id="nameInput" placeholder="Enter your name">
+                <button class="save-progress-btn" id="saveProgressBtn">Save My Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User Authentication & Progress Management System
+        class ChildTimelineApp {
+            constructor() {
+                this.currentUser = null;
+                this.currentStage = 'first-trimester';
+                this.userProgress = {};
+                this.init();
+            }
+
+            init() {
+                console.log('🚀 Initializing Child Timeline App...');
+                this.initializeElements();
+                this.setupEventListeners();
+                this.setupGoogleAuth();
+                this.checkExistingAuth();
+                this.loadInitialState();
+                console.log('✅ Child Timeline App initialized successfully!');
+            }
+
+            initializeElements() {
+                console.log('🔍 Finding page elements...');
+                
+                // Core elements
+                this.timelineMarkers = document.querySelectorAll('.timeline-marker');
+                this.stageCards = document.querySelectorAll('.stage-card');
+                this.currentStageSelect = document.getElementById('currentStage');
+                
+                // Auth elements
+                this.authModal = document.getElementById('authModal');
+                this.getStartedBtn = document.getElementById('getStartedBtn');
+                this.closeModal = document.getElementById('closeModal');
+                this.googleLoginBtn = document.getElementById('googleLoginBtn');
+                this.saveProgressBtn = document.getElementById('saveProgressBtn');
+                this.emailInput = document.getElementById('emailInput');
+                this.nameInput = document.getElementById('nameInput');
+                this.logoutBtn = document.getElementById('logoutBtn');
+                
+                // Report elements
+                this.emailReportBtn = document.getElementById('emailReportBtn');
+                this.reportModal = document.getElementById('reportModal');
+                this.closeReportModal = document.getElementById('closeReportModal');
+                this.reportEmailCapture = document.getElementById('reportEmailCapture');
+                this.reportLoggedInMessage = document.getElementById('reportLoggedInMessage');
+                this.reportEmailInput = document.getElementById('reportEmailInput');
+                this.reportNameInput = document.getElementById('reportNameInput');
+                this.sendReportBtn = document.getElementById('sendReportBtn');
+                this.sendReportLoggedInBtn = document.getElementById('sendReportLoggedInBtn');
+                this.reportUserEmail = document.getElementById('reportUserEmail');
+                this.currentStageDisplay = document.getElementById('currentStageDisplay');
+                this.milestonesCount = document.getElementById('milestonesCount');
+                this.nextStageTime = document.getElementById('nextStageTime');
+                
+                // User interface elements
+                this.userStatus = document.getElementById('userStatus');
+                this.progressIndicator = document.getElementById('progressIndicator');
+                this.userName = document.getElementById('userName');
+                this.userEmail = document.getElementById('userEmail');
+                this.userAvatar = document.getElementById('userAvatar');
+                
+                // Form elements
+                this.notesTextarea = document.getElementById('notes');
+                this.childNameInput = document.getElementById('childName');
+
+                // Check if critical elements were found
+                if (!this.getStartedBtn) {
+                    console.error('❌ Get Started button not found!');
+                }
+                if (!this.emailReportBtn) {
+                    console.error('❌ Email Report button not found!');
+                }
+                if (!this.authModal) {
+                    console.error('❌ Auth modal not found!');
+                }
+                if (!this.reportModal) {
+                    console.error('❌ Report modal not found!');
+                }
+                
+                console.log('📝 Elements found:', {
+                    getStartedBtn: !!this.getStartedBtn,
+                    emailReportBtn: !!this.emailReportBtn,
+                    authModal: !!this.authModal,
+                    reportModal: !!this.reportModal,
+                    timelineMarkers: this.timelineMarkers.length,
+                    stageCards: this.stageCards.length
+                });
+            }
+
+            setupEventListeners() {
+                console.log('🎧 Setting up event listeners...');
+                
+                // Timeline interactions
+                this.timelineMarkers.forEach(marker => {
+                    marker.addEventListener('click', (e) => this.setActiveStage(e.target.dataset.stage));
+                });
+
+                this.stageCards.forEach(card => {
+                    card.addEventListener('click', (e) => this.setActiveStage(e.target.dataset.stage));
+                });
+
+                this.currentStageSelect.addEventListener('change', (e) => this.setActiveStage(e.target.value));
+
+                // Auth interactions
+                if (this.getStartedBtn) {
+                    this.getStartedBtn.addEventListener('click', () => this.handleGetStarted());
+                    console.log('✅ Get Started button listener added');
+                } else {
+                    console.error('❌ Cannot add listener - Get Started button not found');
+                }
+                
+                if (this.closeModal) {
+                    this.closeModal.addEventListener('click', () => this.closeAuthModal());
+                }
+                
+                if (this.saveProgressBtn) {
+                    this.saveProgressBtn.addEventListener('click', () => this.handleEmailSignup());
+                }
+                
+                if (this.logoutBtn) {
+                    this.logoutBtn.addEventListener('click', () => this.handleLogout());
+                }
+
+                // Report interactions
+                if (this.emailReportBtn) {
+                    this.emailReportBtn.addEventListener('click', () => this.showReportModal());
+                    console.log('✅ Email Report button listener added');
+                } else {
+                    console.error('❌ Cannot add listener - Email Report button not found');
+                }
+                
+                if (this.closeReportModal) {
+                    this.closeReportModal.addEventListener('click', () => this.closeReportModal());
+                }
+                
+                if (this.sendReportBtn) {
+                    this.sendReportBtn.addEventListener('click', () => this.handleReportRequest());
+                }
+                
+                if (this.sendReportLoggedInBtn) {
+                    this.sendReportLoggedInBtn.addEventListener('click', () => this.handleReportRequestLoggedIn());
+                }
+
+                // Auto-save functionality
+                if (this.notesTextarea) {
+                    this.notesTextarea.addEventListener('input', () => this.saveProgress());
+                }
+                
+                if (this.childNameInput) {
+                    this.childNameInput.addEventListener('input', () => this.saveProgress());
+                }
+
+                // Modal close on outside click
+                if (this.authModal) {
+                    this.authModal.addEventListener('click', (e) => {
+                        if (e.target === this.authModal) this.closeAuthModal();
+                    });
+                }
+
+                if (this.reportModal) {
+                    this.reportModal.addEventListener('click', (e) => {
+                        if (e.target === this.reportModal) this.closeReportModal();
+                    });
+                }
+                
+                console.log('🎧 Event listeners setup complete');
+            }
+
+            setupGoogleAuth() {
+                // Initialize Google Identity Services when available
+                window.addEventListener('load', () => {
+                    if (window.google && window.google.accounts) {
+                        try {
+                            // Replace with your actual Google Client ID when ready
+                            // For now, Google Auth is optional - email signup still works
+                            google.accounts.id.initialize({
+                                client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', 
+                                callback: (response) => this.handleGoogleLogin(response),
+                                auto_select: false,
+                            });
+
+                            this.googleLoginBtn.addEventListener('click', () => {
+                                google.accounts.id.prompt();
+                            });
+                        } catch (error) {
+                            console.log('Google Auth not configured yet - email signup still available');
+                            // Hide Google login button if not configured
+                            if (this.googleLoginBtn) {
+                                this.googleLoginBtn.style.display = 'none';
+                            }
+                        }
+                    } else {
+                        console.log('Google Auth library not loaded - email signup still available');
+                        // Hide Google login button if library not loaded
+                        if (this.googleLoginBtn) {
+                            this.googleLoginBtn.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            handleGoogleLogin(response) {
+                try {
+                    // Decode JWT token (in production, verify on server)
+                    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+                    
+                    this.currentUser = {
+                        id: payload.sub,
+                        name: payload.name,
+                        email: payload.email,
+                        picture: payload.picture,
+                        authType: 'google'
+                    };
+
+                    this.onUserAuthenticated();
+                } catch (error) {
+                    console.error('Google login error:', error);
+                    this.showMessage('Login failed. Please try again.', 'error');
+                }
+            }
+
+            handleEmailSignup() {
+                const email = this.emailInput.value.trim();
+                const name = this.nameInput.value.trim();
+
+                if (!email || !name) {
+                    this.showMessage('Please enter both name and email.', 'error');
+                    return;
+                }
+
+                if (!this.isValidEmail(email)) {
+                    this.showMessage('Please enter a valid email address.', 'error');
+                    return;
+                }
+
+                this.currentUser = {
+                    id: email,
+                    name: name,
+                    email: email,
+                    picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=8B5A96&color=fff`,
+                    authType: 'email'
+                };
+
+                this.onUserAuthenticated();
+            }
+
+            onUserAuthenticated() {
+                // Save user data
+                localStorage.setItem('childTimeline_user', JSON.stringify(this.currentUser));
+                
+                // Update UI
+                this.updateUserInterface();
+                this.closeAuthModal();
+                this.loadUserProgress();
+                this.showMessage('Welcome! Your progress is now being saved.', 'success');
+                
+                // Send to your backend for lead capture
+                this.captureLeadData();
+            }
+
+            updateUserInterface() {
+                this.userStatus.classList.add('active');
+                this.userName.textContent = this.currentUser.name;
+                this.userEmail.textContent = this.currentUser.email;
+                this.userAvatar.src = this.currentUser.picture;
+                
+                // Update get started button
+                this.getStartedBtn.textContent = 'Save Progress';
+                this.getStartedBtn.classList.add('save-mode');
+            }
+
+            async captureLeadData() {
+                // Send lead data to Google Sheets via Apps Script
+                try {
+                    const leadData = {
+                        action: 'capture_lead',
+                        name: this.currentUser.name,
+                        email: this.currentUser.email,
+                        authType: this.currentUser.authType,
+                        currentStage: this.currentStage,
+                        childName: this.childNameInput.value || '',
+                        notes: this.notesTextarea.value || '',
+                        timestamp: new Date().toISOString(),
+                        source: 'child-timeline'
+                    };
+
+                    // Your Google Apps Script URL
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi15zXy45bwF2Icz7dSAchffhPO9Mc2w8f9IAP_WECR1OqViN6SyBs3_CBy_J2hxlpFQ/exec';
+                    
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(leadData)
+                    });
+
+                    console.log('Lead captured successfully');
+                } catch (error) {
+                    console.log('Lead capture failed:', error);
+                    // Continue gracefully - don't interrupt user experience
+                }
+            }
+
+            handleGetStarted() {
+                console.log('🎯 Get Started button clicked');
+                if (this.currentUser) {
+                    console.log('📄 User logged in - saving progress');
+                    // User is logged in, save progress
+                    this.saveProgress();
+                    this.showProgressSync();
+                } else {
+                    console.log('🔐 User not logged in - showing auth modal');
+                    // User not logged in, show auth modal
+                    this.showAuthModal();
+                }
+            }
+
+            showAuthModal() {
+                console.log('📱 Opening auth modal');
+                this.authModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeAuthModal() {
+                this.authModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Clear form
+                this.emailInput.value = '';
+                this.nameInput.value = '';
+            }
+
+            setActiveStage(stageId) {
+                this.currentStage = stageId;
+                
+                // Update UI
+                this.timelineMarkers.forEach(marker => {
+                    marker.classList.toggle('active', marker.dataset.stage === stageId);
+                });
+
+                this.stageCards.forEach(card => {
+                    card.classList.toggle('active', card.dataset.stage === stageId);
+                    if (card.dataset.stage === stageId) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+
+                this.currentStageSelect.value = stageId;
+                
+                // Auto-save if user is logged in
+                if (this.currentUser) {
+                    this.saveProgress();
+                }
+            }
+
+            saveProgress() {
+                if (!this.currentUser) return;
+
+                const progressData = {
+                    userId: this.currentUser.id,
+                    currentStage: this.currentStage,
+                    childName: this.childNameInput.value,
+                    notes: this.notesTextarea.value,
+                    lastUpdated: new Date().toISOString()
+                };
+
+                // Save locally
+                localStorage.setItem('childTimeline_progress', JSON.stringify(progressData));
+                
+                // Save to cloud (replace with your backend)
+                this.saveToCloud(progressData);
+                
+                this.showProgressSync();
+            }
+
+            async saveToCloud(progressData) {
+                try {
+                    // Save progress data to Google Sheets
+                    const saveData = {
+                        action: 'capture_lead', // We can reuse the same function
+                        name: this.currentUser.name,
+                        email: this.currentUser.email,
+                        authType: this.currentUser.authType,
+                        currentStage: progressData.currentStage,
+                        childName: progressData.childName,
+                        notes: progressData.notes,
+                        source: 'progress-update',
+                        timestamp: progressData.lastUpdated
+                    };
+
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi15zXy45bwF2Icz7dSAchffhPO9Mc2w8f9IAP_WECR1OqViN6SyBs3_CBy_J2hxlpFQ/exec';
+                    
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(saveData)
+                    });
+                } catch (error) {
+                    console.log('Cloud save failed:', error);
+                    // Fail gracefully - local storage still works
+                }
+            }
+
+            showProgressSync() {
+                this.progressIndicator.classList.add('active');
+                setTimeout(() => {
+                    this.progressIndicator.classList.remove('active');
+                }, 3000);
+            }
+
+            loadUserProgress() {
+                const savedProgress = localStorage.getItem('childTimeline_progress');
+                if (savedProgress) {
+                    const progress = JSON.parse(savedProgress);
+                    
+                    // Restore form data
+                    this.childNameInput.value = progress.childName || '';
+                    this.notesTextarea.value = progress.notes || '';
+                    
+                    // Restore current stage
+                    if (progress.currentStage) {
+                        this.setActiveStage(progress.currentStage);
+                    }
+                }
+            }
+
+            checkExistingAuth() {
+                const savedUser = localStorage.getItem('childTimeline_user');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.updateUserInterface();
+                    this.loadUserProgress();
+                }
+            }
+
+            loadInitialState() {
+                // Load non-auth state from localStorage
+                const savedStage = localStorage.getItem('selectedStage');
+                if (savedStage && !this.currentUser) {
+                    this.setActiveStage(savedStage);
+                }
+            }
+
+            handleLogout() {
+                localStorage.removeItem('childTimeline_user');
+                localStorage.removeItem('childTimeline_progress');
+                this.currentUser = null;
+                
+                // Reset UI
+                this.userStatus.classList.remove('active');
+                this.getStartedBtn.textContent = 'Get Started';
+                this.getStartedBtn.classList.remove('save-mode');
+                
+                // Clear form data
+                this.childNameInput.value = '';
+                this.notesTextarea.value = '';
+                
+                this.showMessage('Signed out successfully.', 'info');
+            }
+
+            showMessage(message, type = 'info') {
+                // Create a simple toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'error' ? '#f44336' : type === 'success' ? '#4CAF50' : '#2196F3'};
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 4px;
+                    z-index: 10000;
+                    font-size: 14px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000);
+            }
+
+            // Report Generation Methods
+            showReportModal() {
+                console.log('📧 Email Report button clicked');
+                this.updateReportPreview();
+                this.reportModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // Show appropriate form based on login status
+                if (this.currentUser) {
+                    console.log('👤 User logged in - showing logged in report form');
+                    this.reportEmailCapture.style.display = 'none';
+                    this.reportLoggedInMessage.style.display = 'block';
+                    this.reportUserEmail.textContent = this.currentUser.email;
+                } else {
+                    console.log('👥 User not logged in - showing email capture form');
+                    this.reportEmailCapture.style.display = 'block';
+                    this.reportLoggedInMessage.style.display = 'none';
+                }
+            }
+
+            closeReportModal() {
+                this.reportModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Clear form
+                this.reportEmailInput.value = '';
+                this.reportNameInput.value = '';
+            }
+
+            updateReportPreview() {
+                const stageInfo = this.getStageInfo(this.currentStage);
+                
+                // Update preview data
+                this.currentStageDisplay.textContent = stageInfo.title;
+                this.milestonesCount.textContent = stageInfo.milestones.length;
+                this.nextStageTime.textContent = stageInfo.nextStageTime;
+            }
+
+            getStageInfo(stageId) {
+                const stageData = {
+                    'first-trimester': {
+                        title: 'First Trimester',
+                        milestones: ['Heartbeat begins', 'Organs form', 'First ultrasound', 'Morning sickness peak'],
+                        nextStageTime: '3 months',
+                        duration: 'Weeks 1-12'
+                    },
+                    'second-trimester': {
+                        title: 'Second Trimester', 
+                        milestones: ['Baby movements', 'Gender determination', 'Anatomy scan', 'Energy improvement'],
+                        nextStageTime: '3 months',
+                        duration: 'Weeks 13-26'
+                    },
+                    'third-trimester': {
+                        title: 'Third Trimester',
+                        milestones: ['Brain development', 'Lung maturation', 'Weight gain', 'Braxton Hicks'],
+                        nextStageTime: '3 months',
+                        duration: 'Weeks 27-40'
+                    },
+                    'fourth-trimester': {
+                        title: '4th Trimester',
+                        milestones: ['Social smiles', 'Head control', 'Sleep patterns', 'Feeding routines'],
+                        nextStageTime: '3 months',
+                        duration: '0-3 months'
+                    },
+                    'growing-baby': {
+                        title: 'Growing Baby',
+                        milestones: ['Rolling over', 'Grasping objects', 'Laughing', 'Solid foods interest'],
+                        nextStageTime: '3 months',
+                        duration: '3-6 months'
+                    },
+                    'sitting-exploring': {
+                        title: 'Sitting & Exploring',
+                        milestones: ['Sitting unsupported', 'Object transfer', 'Crawling', 'Name response'],
+                        nextStageTime: '3 months',
+                        duration: '6-9 months'
+                    },
+                    'moving-grooving': {
+                        title: 'Moving & Grooving',
+                        milestones: ['Pulling to stand', 'Cruising furniture', 'First words', 'Peek-a-boo'],
+                        nextStageTime: '3 months',
+                        duration: '9-12 months'
+                    },
+                    'first-steps': {
+                        title: 'First Steps',
+                        milestones: ['Independent steps', 'Meaningful words', 'Activity preferences', 'Imitation'],
+                        nextStageTime: '3 months',
+                        duration: '12-15 months'
+                    },
+                    'toddler-time': {
+                        title: 'Toddler Time',
+                        milestones: ['Confident walking', '10-20 words', 'Independent play', 'Preferences'],
+                        nextStageTime: '3 months',
+                        duration: '15-18 months'
+                    },
+                    'growing-independence': {
+                        title: 'Growing Independence',
+                        milestones: ['Running/climbing', '50+ words', 'Parallel play', 'Emotional regulation'],
+                        nextStageTime: '3 months',
+                        duration: '18-21 months'
+                    },
+                    'almost-two': {
+                        title: 'Almost Two',
+                        milestones: ['Word combinations', 'Potty interest', 'Pretend play', 'Following instructions'],
+                        nextStageTime: '6 months',
+                        duration: '21-24 months'
+                    },
+                    'two-half': {
+                        title: 'Two and a Half',
+                        milestones: ['Complete sentences', 'Empathy', 'Cooperative play', 'Problem solving'],
+                        nextStageTime: '6 months',
+                        duration: '2.5 years'
+                    },
+                    'three-years': {
+                        title: 'Three Years Old',
+                        milestones: ['Tricycle pedaling', 'Complex sentences', 'Letter interest', 'Cooperative play'],
+                        nextStageTime: '1 year',
+                        duration: '3 years'
+                    },
+                    'four-years': {
+                        title: 'Four Years Old',
+                        milestones: ['One foot hopping', 'Storytelling', 'Attention span', 'Self-control'],
+                        nextStageTime: '1 year',
+                        duration: '4 years'
+                    },
+                    'kindergarten': {
+                        title: 'Kindergarten Ready',
+                        milestones: ['School readiness', 'Social maturity', 'Multi-step instructions', 'Clear expression'],
+                        nextStageTime: 'Next grade',
+                        duration: '5+ years'
+                    }
+                };
+
+                return stageData[stageId] || stageData['first-trimester'];
+            }
+
+            handleReportRequest() {
+                const email = this.reportEmailInput.value.trim();
+                const name = this.reportNameInput.value.trim();
+
+                if (!email || !name) {
+                    this.showMessage('Please enter both name and email.', 'error');
+                    return;
+                }
+
+                if (!this.isValidEmail(email)) {
+                    this.showMessage('Please enter a valid email address.', 'error');
+                    return;
+                }
+
+                // Create temporary user for report
+                const reportUser = {
+                    id: email,
+                    name: name,
+                    email: email,
+                    authType: 'report-only'
+                };
+
+                this.sendReport(reportUser);
+            }
+
+            handleReportRequestLoggedIn() {
+                if (!this.currentUser) {
+                    this.showMessage('Please sign in first.', 'error');
+                    return;
+                }
+
+                this.sendReport(this.currentUser);
+            }
+
+            async sendReport(user) {
+                try {
+                    // Disable button and show loading
+                    const button = user.authType === 'report-only' ? this.sendReportBtn : this.sendReportLoggedInBtn;
+                    const originalText = button.textContent;
+                    button.disabled = true;
+                    button.textContent = 'Generating Report...';
+
+                    // Generate report data
+                    const reportData = this.generateReportData(user);
+
+                    // Send to your backend
+                    await this.sendReportToBackend(reportData);
+
+                    // Show success message
+                    this.showMessage('Report sent successfully! Check your email.', 'success');
+                    this.closeReportModal();
+
+                    // If user signed up for report only, save as potential lead
+                    if (user.authType === 'report-only') {
+                        await this.captureReportLead(user);
+                    }
+
+                } catch (error) {
+                    console.error('Report sending failed:', error);
+                    this.showMessage('Failed to send report. Please try again.', 'error');
+                } finally {
+                    // Re-enable button
+                    const button = user.authType === 'report-only' ? this.sendReportBtn : this.sendReportLoggedInBtn;
+                    button.disabled = false;
+                    button.textContent = button === this.sendReportBtn ? 'Send My Personalized Report' : 'Send My Report Now';
+                }
+            }
+
+            generateReportData(user) {
+                const stageInfo = this.getStageInfo(this.currentStage);
+                const childName = this.childNameInput.value || 'your child';
+                const notes = this.notesTextarea.value;
+
+                return {
+                    user: {
+                        name: user.name,
+                        email: user.email
+                    },
+                    child: {
+                        name: childName,
+                        currentStage: this.currentStage,
+                        stageInfo: stageInfo,
+                        parentNotes: notes
+                    },
+                    report: {
+                        generatedAt: new Date().toISOString(),
+                        type: 'development-milestone',
+                        personalizations: this.getPersonalizations(stageInfo, childName)
+                    },
+                    followUp: {
+                        nextReportDate: this.calculateNextReportDate(),
+                        recommendedActions: this.getRecommendedActions(stageInfo)
+                    }
+                };
+            }
+
+            getPersonalizations(stageInfo, childName) {
+                return {
+                    greeting: `Here's ${childName}'s personalized development report`,
+                    currentFocus: `At the ${stageInfo.title} stage, focus on supporting these key areas`,
+                    encouragement: `${childName} is making wonderful progress! Here's what to celebrate and what comes next.`,
+                    nextSteps: `In the next ${stageInfo.nextStageTime}, watch for these exciting developments`
+                };
+            }
+
+            calculateNextReportDate() {
+                const now = new Date();
+                const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+                return nextMonth.toISOString();
+            }
+
+            getRecommendedActions(stageInfo) {
+                const actions = {
+                    'first-trimester': [
+                        'Schedule prenatal appointments',
+                        'Start prenatal vitamins',
+                        'Avoid alcohol and smoking',
+                        'Eat nutritious foods'
+                    ],
+                    'growing-baby': [
+                        'Provide tummy time daily',
+                        'Offer colorful toys to grasp',
+                        'Read books together',
+                        'Introduce solid foods gradually'
+                    ],
+                    'toddler-time': [
+                        'Create safe exploration spaces',
+                        'Establish consistent routines',
+                        'Practice simple words',
+                        'Encourage independence'
+                    ]
+                };
+
+                return actions[this.currentStage] || [
+                    'Continue regular pediatric checkups',
+                    'Provide age-appropriate activities',
+                    'Maintain consistent routines',
+                    'Encourage development through play'
+                ];
+            }
+
+            async sendReportToBackend(reportData) {
+                // Send report via Google Apps Script (Gmail)
+                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi15zXy45bwF2Icz7dSAchffhPO9Mc2w8f9IAP_WECR1OqViN6SyBs3_CBy_J2hxlpFQ/exec';
+                
+                const requestData = {
+                    action: 'send_report',
+                    ...reportData
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send report');
+                }
+
+                return response.json();
+            }
+
+            async captureReportLead(user) {
+                try {
+                    const leadData = {
+                        action: 'capture_lead',
+                        name: user.name,
+                        email: user.email,
+                        source: 'development-report',
+                        currentStage: this.currentStage,
+                        childName: this.childNameInput.value || '',
+                        notes: this.notesTextarea.value || '',
+                        timestamp: new Date().toISOString(),
+                        authType: 'report-only',
+                        leadMagnet: 'personalized-development-report'
+                    };
+
+                    // Send to Google Sheets via Apps Script
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi15zXy45bwF2Icz7dSAchffhPO9Mc2w8f9IAP_WECR1OqViN6SyBs3_CBy_J2hxlpFQ/exec';
+                    
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(leadData)
+                    });
+
+                } catch (error) {
+                    console.log('Lead capture failed:', error);
+                    // Don't interrupt user experience
+                }
+            }
+
+            isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+        }
+
+        // Initialize the application
+        const app = new ChildTimelineApp();
+    </script>
+</body>
+</html>
+
